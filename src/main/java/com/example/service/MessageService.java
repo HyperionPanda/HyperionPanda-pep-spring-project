@@ -3,13 +3,13 @@ package com.example.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
+import org.springframework.stereotype.Service;
 
 
 
-@Component
+@Service
 public class MessageService {
 
     MessageRepository repository;
@@ -18,12 +18,12 @@ public class MessageService {
     public MessageService(MessageRepository newRepository){
         repository = newRepository;
     }
-
+/* 
     //needs to test for if user is a real person, doesnt do that currently
     public Message createMessage(Message message){
         if (!(message.getMessage_text().isBlank()) && message.getMessage_text().length() < 255 ){
-            return repository.newMessage(message.getMessage_id(),message.getMessage_text(),message.getTime_posted_epoch());
-    
+            //return repository.newMessage(message.getMessage_id(),message.getMessage_text(),message.getTime_posted_epoch());
+            return repository.save(message);
         }else{
             return null;
         }
@@ -34,7 +34,8 @@ public class MessageService {
     }
 
     public Message getOneMessageById(Integer id){
-        return repository.oneMessagebyMessageId(id);
+        //return repository.oneMessagebyMessageId(id);
+        return repository.getById(id);
     }
 
     //in controller body should be blank if no message existed, should test for?
@@ -49,9 +50,10 @@ public class MessageService {
     public Integer updateMsgById(Integer id){
         return repository.updateMessagebyId(id,)
     }
-    */
+    
 
     public List<Message> getAllMsgsByUser(Integer user_id){
         return repository.allMessagesbyUser(user_id);
     }
+*/
 }

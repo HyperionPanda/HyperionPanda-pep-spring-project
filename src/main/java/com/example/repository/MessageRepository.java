@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.example.entity.Message;
 
+@Repository
 public interface MessageRepository extends JpaRepository<Message,Integer>{
+
 
     //refference
     // could also use @Query("From Account WHERE name = :variable")
@@ -20,10 +23,12 @@ public interface MessageRepository extends JpaRepository<Message,Integer>{
     */
 
     //instead of String account might need type Account
+    /* 
     @Modifying
     @Query("INSERT INTO Message VALUES (:postedBy,:text,:timePosted)")
     Message newMessage(@Param("postedBy") Integer account,@Param("text") String text,@Param("timePosted") Long posted_time);
-
+    */
+/*   
     @Query("FROM Message")
     List<Message> allMessages();
 
@@ -45,5 +50,5 @@ public interface MessageRepository extends JpaRepository<Message,Integer>{
     List<Message> allMessagesbyUser(@Param("accountId") Integer account_id );
 
     
-
+*/
 }
