@@ -20,20 +20,14 @@ public class AccountService {
     //needs to check if account already exists in database, use login once finished?
     //MIGHT NEED TO USE SAVE!!!!!
     
-    public Account registerUser(Account account)throws UserExists{
-       try{
-            if(!(account.getUsername().isEmpty()) && (account.getPassword()).length() >= 4){
+    public Account registerUser(Account account){
+       
+        if(!(account.getUsername().isEmpty()) && (account.getPassword()).length() >= 4){
             
-                return repository.save(account);
-            }else{
-                return null;
-            }
-        }catch(Exception e){
-            throw new UserExists();
-           
+            return repository.save(account);
+        }else{
+            return null;
         }
-        
-        
     }
 /* 
     //does this need account id?

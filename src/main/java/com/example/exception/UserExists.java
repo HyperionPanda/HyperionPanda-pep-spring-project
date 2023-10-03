@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
-@ResponseStatus(HttpStatus.CONFLICT)
-public class UserExists extends Exception{
+
+public class UserExists extends RuntimeException{
 
     /* 
     public UserExists(String s){

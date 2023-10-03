@@ -35,14 +35,18 @@ public class SocialMediaController {
 
     
     @PostMapping(value = "register")
-    public Account registerUser(@RequestBody Account account) throws UserExists{
-        Account returnedAccount = accountService.registerUser(account);
-        if(returnedAccount == null){
-            return null;
-        }else{
+    public Account registerUser(@RequestBody Account account){
+        try{
+            Account returnedAccount = accountService.registerUser(account);
+        
             return returnedAccount;
-        }
+        }catch(Exception e){
+            throw new UserExists();
+        } 
     }
+    @ExceptionHandler(UserExists.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody void handleUserFound(UserExists ex) {}
     
 /* 
     @PostMapping(value = "/login")
