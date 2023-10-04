@@ -44,11 +44,11 @@ public interface MessageRepository extends JpaRepository<Message,Integer>{
     @Modifying
     @Query("UPDATE Message SET posted_by = :account, message_text = :text, time_posted_epoch = :timePosted,  WHERE message_id = :messageId")
     Integer updateMessagebyId(@Param("messageId") Integer message_id, @Param("postedBy") Integer account,@Param("text") String text,@Param("timePosted") Long posted_time );
-
+*/
     //
-    @Query("FROM Message WHERE message_id = :accountId  ")
+    @Query("FROM Message WHERE posted_by = :accountId  ")
     List<Message> allMessagesbyUser(@Param("accountId") Integer account_id );
 
     
-*/
+
 }

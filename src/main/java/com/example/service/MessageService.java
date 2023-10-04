@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.entity.Message;
+import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,22 +14,24 @@ import org.springframework.stereotype.Service;
 public class MessageService {
 
     MessageRepository repository;
+    AccountRepository userRepository;
 
     @Autowired
-    public MessageService(MessageRepository newRepository){
+    public MessageService(MessageRepository newRepository, AccountRepository userrepository){
         repository = newRepository;
+        userRepository = userrepository;
     }
-/* 
+
     //needs to test for if user is a real person, doesnt do that currently
     public Message createMessage(Message message){
-        if (!(message.getMessage_text().isBlank()) && message.getMessage_text().length() < 255 ){
+        if (message.getMessage_text().length() > 0 && message.getMessage_text().length() < 255 && userRepository.existsById(message.getPosted_by())){
             //return repository.newMessage(message.getMessage_id(),message.getMessage_text(),message.getTime_posted_epoch());
             return repository.save(message);
         }else{
             return null;
         }
     }
-
+/*
     public List<Message> getAllMessages(){
         return repository.allMessages();
     }
@@ -51,9 +54,10 @@ public class MessageService {
         return repository.updateMessagebyId(id,)
     }
     
-
+*/
     public List<Message> getAllMsgsByUser(Integer user_id){
+        
         return repository.allMessagesbyUser(user_id);
     }
-*/
+
 }

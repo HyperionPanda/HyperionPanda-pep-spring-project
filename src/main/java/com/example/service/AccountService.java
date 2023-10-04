@@ -12,6 +12,11 @@ public class AccountService {
 
     AccountRepository repository;
 
+    /*
+    System.out.println(account.getUsername());
+        System.out.println(account.getPassword());
+        System.out.println(testAccount); */
+
     @Autowired
     public AccountService(AccountRepository newRepository){
         repository = newRepository;
@@ -29,11 +34,14 @@ public class AccountService {
             return null;
         }
     }
-/* 
+
     //does this need account id?
     //should do a check? or check if return is null?
     public Account loginAccount(Account account){
-        return repository.userLogin(account.getUsername(),account.getPassword());
+        
+        Account testAccount = repository.userLogin(account.getUsername(),account.getPassword());
+    
+        return testAccount;
     }
-*/
+
 }

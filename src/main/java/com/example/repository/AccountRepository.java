@@ -24,11 +24,11 @@ public interface AccountRepository extends JpaRepository<Account,Integer>{
     //might need select for getting new account after insert
     @Query("INSERT INTO Account VALUES (:username,:password)")
     Account userRegistration(@Param("username") String user, @Param("password") String password);
-    
+*/
     //
     @Query("FROM Account WHERE username = :user AND password = :pass")
     Account userLogin(@Param("user") String username, @Param("pass") String password);
-`*/
+
     @Query("FROM Account WHERE username = :user")
     Account existsByUsername(@Param("user") String user);
 }

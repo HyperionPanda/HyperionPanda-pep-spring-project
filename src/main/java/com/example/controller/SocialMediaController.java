@@ -11,7 +11,9 @@ import com.example.service.AccountService;
 import com.example.service.MessageService;
 
 import com.example.exception.HandleException;
+import com.example.exception.UnauthorizedUser;
 import com.example.exception.UserExists;
+import com.example.exception.UncreatableMessage;
 
 import org.springframework.http.HttpStatus;
 
@@ -48,46 +50,49 @@ public class SocialMediaController {
     @ResponseStatus(HttpStatus.CONFLICT)
     public @ResponseBody void handleUserFound(UserExists ex) {}
     
-/* 
+
     @PostMapping(value = "/login")
     public Account loginUser(@RequestBody Account account){
+    
         Account returnedAccount = accountService.loginAccount(account);
         if(returnedAccount == null){
-            //response status 400
+            throw new UnauthorizedUser();
         }else{
-            //response status 200, not needed to specify?
-            //return account?
+            return returnedAccount;
         }
-        return null;
+        
 
     }
+
+    @ExceptionHandler(UnauthorizedUser.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public @ResponseBody void handleUnauthorizeUser(UnauthorizedUser ex) {}
 
     @GetMapping(value = "/accounts/{account_id}/messages")
     public List<Message> getMessagesFromUser(@PathVariable("account_id") int id){
         List<Message> messageList = messageService.getAllMsgsByUser(id);
-        if(messageList.isEmpty()){
-            //response status 400
-        }else{
-            //response status 200, not needed to specify?
-            //return account?
-        }
-        return null;
+         return messageList;
 
     }
 
     @PostMapping(value = "/messages")
     public Message createMessage(@RequestBody Message message){
-        Message retunedMessage = messageService.createMessage(message);
-        if(retunedMessage == null){
-            //response status 400
-        }else{
-            //response status 200, not needed to specify?
-            //return account?
+        try{
+            Message retunedMessage = messageService.createMessage(message);
+            if( retunedMessage == null){
+                throw new UncreatableMessage();
+            }
+            return retunedMessage;
+        
+        }catch(Exception e){
+            throw new UncreatableMessage();
         }
-        return null;
-
     }
 
+    @ExceptionHandler(UncreatableMessage.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody void handleUncreatableMessage(UncreatableMessage ex) {}
+/*
     @GetMapping(value = "/messages")
     public List<Message> getAllMessages(){
         List<Message> retunedMessage = messageService.getAllMessages();
