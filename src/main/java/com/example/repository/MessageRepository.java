@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entity.Message;
 
@@ -39,12 +40,13 @@ public interface MessageRepository extends JpaRepository<Message,Integer>{
     @Modifying
     @Query("DELETE FROM Message WHERE message_id = :id")
     Integer deleteMessagebyId(@Param("id") Integer message_id);
-
-    //issue may happen with set, needs to return number of rows updated
-    @Modifying
-    @Query("UPDATE Message SET posted_by = :account, message_text = :text, time_posted_epoch = :timePosted,  WHERE message_id = :messageId")
-    Integer updateMessagebyId(@Param("messageId") Integer message_id, @Param("postedBy") Integer account,@Param("text") String text,@Param("timePosted") Long posted_time );
 */
+    //issue may happen with set, needs to return number of rows updated
+    @Transactional
+    @Modifying
+    @Query("UPDATE Message SET message_text = :text WHERE message_id = :messageId")
+    Integer updateMessagebyId(@Param("messageId") Integer message_id, @Param("text") String text);
+
     //
     @Query("FROM Message WHERE posted_by = :accountId  ")
     List<Message> allMessagesbyUser(@Param("accountId") Integer account_id );

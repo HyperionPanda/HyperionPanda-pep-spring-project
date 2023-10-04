@@ -11,6 +11,7 @@ import com.example.service.AccountService;
 import com.example.service.MessageService;
 
 import com.example.exception.HandleException;
+import com.example.exception.NoMessageExists;
 import com.example.exception.UnauthorizedUser;
 import com.example.exception.UserExists;
 import com.example.exception.UncreatableMessage;
@@ -127,20 +128,23 @@ public class SocialMediaController {
 
     }
 
-    /* 
-    @PatchMapping(value = "/messages/{message_id}")
-    public int updateMessageGivenMessageID(@PathVariable("message_id") int id){
-        int retunedRowsAffected = messageService.
-        if(retunedRowsAffected <= 0){
-            //response status 400
-        }else{
-            //response status 200, not needed to specify?
-            //return account?
-        }
-        return -1;
-
-    }
     */
+    @PatchMapping(value = "/messages/{message_id}")
+    public int updateMessageGivenMessageID(@PathVariable("message_id") int id, @RequestBody String message_text){
+        int retunedRowsAffected = messageService.updateMsgById(id,message_text);
+
+        if(retunedRowsAffected <= 0){
+            throw new NoMessageExists();
+        }else{
+            return retunedRowsAffected;
+        }
+        
+    }
+
+    @ExceptionHandler(NoMessageExists.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody void handleNoMessageExists(NoMessageExists ex) {}
+    
 
 
 }
