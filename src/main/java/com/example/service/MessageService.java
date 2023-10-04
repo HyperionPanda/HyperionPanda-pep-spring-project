@@ -31,14 +31,14 @@ public class MessageService {
             return null;
         }
     }
-/*
+
     public List<Message> getAllMessages(){
-        return repository.allMessages();
+        return repository.findAll();
     }
 
     public Message getOneMessageById(Integer id){
-        //return repository.oneMessagebyMessageId(id);
-        return repository.getById(id);
+        return repository.oneMessagebyMessageId(id);
+       
     }
 
     //in controller body should be blank if no message existed, should test for?
@@ -46,14 +46,11 @@ public class MessageService {
         return repository.deleteMessagebyId(id);
     }
 
-    // needs to get existing message before calling update since it requires all information
-    //or change repository to only require the id and the message text
-    //if doing second option, test for if it tries to change other info during test, since not garunteed but possible
-    */
     public Integer updateMsgById(Integer id, String message_text){
+        
         //message_text includes json label of message_text, making the default length 20 not 0
         int textLength = message_text.length()-20;
-        
+
         if (textLength > 0 && textLength < 255 && repository.existsById(id) ){
             return repository.updateMessagebyId(id, message_text);
         }else{

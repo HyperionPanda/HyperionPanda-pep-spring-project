@@ -93,17 +93,11 @@ public class SocialMediaController {
     @ExceptionHandler(UncreatableMessage.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody void handleUncreatableMessage(UncreatableMessage ex) {}
-/*
+
     @GetMapping(value = "/messages")
     public List<Message> getAllMessages(){
-        List<Message> retunedMessage = messageService.getAllMessages();
-        if(retunedMessage == null){
-            //response status 400
-        }else{
-            //response status 200, not needed to specify?
-            //return account?
-        }
-        return null;
+        List<Message> retunedMessages = messageService.getAllMessages();
+        return retunedMessages;
 
     }
 
@@ -118,17 +112,11 @@ public class SocialMediaController {
     @DeleteMapping(value = "/messages/{message_id}")
     public int deleteMessageGivenMessageID(@PathVariable("message_id") int id){
         int retunedRowsAffected = messageService.deleteMsgById(id);
-        if(retunedRowsAffected <= 0){
-            //response status 400
-        }else{
-            //response status 200, not needed to specify?
-            //return account?
-        }
-        return -1;
+        return retunedRowsAffected;
 
     }
 
-    */
+
     @PatchMapping(value = "/messages/{message_id}")
     public int updateMessageGivenMessageID(@PathVariable("message_id") int id, @RequestBody String message_text){
         int retunedRowsAffected = messageService.updateMsgById(id,message_text);
