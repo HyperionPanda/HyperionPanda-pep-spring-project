@@ -1,20 +1,17 @@
 package com.example.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.context.ApplicationContext;
-import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.entity.Account;
 import com.example.entity.Message;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
-
-import com.example.exception.HandleException;
+import com.example.exception.BadMessageRequest;
 import com.example.exception.NoMessageExists;
 import com.example.exception.UnauthorizedUser;
 import com.example.exception.UserExists;
-import com.example.exception.UncreatableMessage;
+import com.example.exception.BadMessageRequest;
 
 import org.springframework.http.HttpStatus;
 
@@ -39,66 +36,46 @@ public class SocialMediaController {
     
     @PostMapping(value = "register")
     public Account registerUser(@RequestBody Account account){
-        try{
-            Account returnedAccount = accountService.registerUser(account);
-        
+        Account returnedAccount = accountService.registerUser(account);
+        if (returnedAccount != null){
             return returnedAccount;
-        }catch(Exception e){
+        }else{
             throw new UserExists();
         } 
     }
-    @ExceptionHandler(UserExists.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody void handleUserFound(UserExists ex) {}
     
-
     @PostMapping(value = "/login")
     public Account loginUser(@RequestBody Account account){
-    
         Account returnedAccount = accountService.loginAccount(account);
         if(returnedAccount == null){
             throw new UnauthorizedUser();
         }else{
             return returnedAccount;
         }
-        
-
     }
-
-    @ExceptionHandler(UnauthorizedUser.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public @ResponseBody void handleUnauthorizeUser(UnauthorizedUser ex) {}
 
     @GetMapping(value = "/accounts/{account_id}/messages")
     public List<Message> getMessagesFromUser(@PathVariable("account_id") int id){
         List<Message> messageList = messageService.getAllMsgsByUser(id);
          return messageList;
-
     }
 
     @PostMapping(value = "/messages")
     public Message createMessage(@RequestBody Message message){
-        try{
-            Message retunedMessage = messageService.createMessage(message);
-            if( retunedMessage == null){
-                throw new UncreatableMessage();
-            }
+        Message retunedMessage = messageService.createMessage(message);
+        if( retunedMessage == null){
+                throw new BadMessageRequest();
+        }else{
             return retunedMessage;
-        
-        }catch(Exception e){
-            throw new UncreatableMessage();
         }
     }
 
-    @ExceptionHandler(UncreatableMessage.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public @ResponseBody void handleUncreatableMessage(UncreatableMessage ex) {}
-
     @GetMapping(value = "/messages")
     public List<Message> getAllMessages(){
-        List<Message> retunedMessages = messageService.getAllMessages();
-        return retunedMessages;
 
+        List<Message> retunedMessages = messageService.getAllMessages();
+
+        return retunedMessages;
     }
 
     @GetMapping(value = "/messages/{message_id}")
@@ -106,7 +83,6 @@ public class SocialMediaController {
         Message retunedMessage = messageService.getOneMessageById(id);
         
         return retunedMessage;
-
     }
 
     @DeleteMapping(value = "/messages/{message_id}")
@@ -129,9 +105,23 @@ public class SocialMediaController {
         
     }
 
+    @ExceptionHandler(UserExists.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody void handleUserFound(UserExists ex) {}
+
+    @ExceptionHandler(UnauthorizedUser.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public @ResponseBody void handleUnauthorizeUser(UnauthorizedUser ex) {}
+
+    @ExceptionHandler(BadMessageRequest.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody void handleBadMessageRequest(BadMessageRequest ex) {}
+
     @ExceptionHandler(NoMessageExists.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody void handleNoMessageExists(NoMessageExists ex) {}
+
+    
     
 
 

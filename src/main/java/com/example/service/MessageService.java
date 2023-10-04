@@ -22,10 +22,9 @@ public class MessageService {
         userRepository = userrepository;
     }
 
-    //needs to test for if user is a real person, doesnt do that currently
+    
     public Message createMessage(Message message){
         if (message.getMessage_text().length() > 0 && message.getMessage_text().length() < 255 && userRepository.existsById(message.getPosted_by())){
-            //return repository.newMessage(message.getMessage_id(),message.getMessage_text(),message.getTime_posted_epoch());
             return repository.save(message);
         }else{
             return null;
@@ -41,13 +40,12 @@ public class MessageService {
        
     }
 
-    //in controller body should be blank if no message existed, should test for?
     public Integer deleteMsgById(Integer id){
         return repository.deleteMessagebyId(id);
     }
 
     public Integer updateMsgById(Integer id, String message_text){
-        
+
         //message_text includes json label of message_text, making the default length 20 not 0
         int textLength = message_text.length()-20;
 
