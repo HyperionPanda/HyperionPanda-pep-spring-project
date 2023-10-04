@@ -11,7 +11,6 @@ import com.example.exception.BadMessageRequest;
 import com.example.exception.NoMessageExists;
 import com.example.exception.UnauthorizedUser;
 import com.example.exception.UserExists;
-import com.example.exception.BadMessageRequest;
 
 import org.springframework.http.HttpStatus;
 
